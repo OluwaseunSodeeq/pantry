@@ -10,8 +10,8 @@ import {
   TextField,
 } from "@mui/material";
 import { firestore } from "@/firebase";
+import { collection } from "firebase/firestore";
 import {
-  collection,
   doc,
   getDocs,
   query,
@@ -37,12 +37,17 @@ export default function Home() {
   const [itemName, setItemName] = useState("");
   const [open, setOpen] = useState(false);
 
+  // useEffect(() => {
+  //   const item = collection(firestore, "pantry");
+  //   console.log(item);
+  // }, []);
   const updatePantry = async () => {
     try {
       const snapshot = query(collection(firestore, "pantry"));
       const docs = await getDocs(snapshot);
       const pantryList = [];
       docs.forEach((doc) => {
+        console.log(doc.id, doc.data());
         pantryList.push({ name: doc.id, ...doc.data() });
       });
       setPantry(pantryList);
